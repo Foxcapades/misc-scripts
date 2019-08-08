@@ -1,0 +1,28 @@
+= Subversion to Git migration helpers
+
+Utils and wrappers to simplify my life while manually
+creating and maintaining a one way sync between the EuPathDB
+SVN projects and git mirrors of those projects.
+
+== Scripts
+
+`sco.sh`:: git svn checkout
+`update.sh`:: git svn rebase
+`switch.sh`:: helper to change the owner of the git repos from "EuPathDB-Infra" to "EuPathDB"
+
+## Notes
+
+### Update
+
+#### Step 1:
+
+```sh
+./update.sh
+```
+
+#### Step 2:
+
+fix the broken repositories using git rebase/merge followed by
+```sh
+git push --all origin -fu
+```

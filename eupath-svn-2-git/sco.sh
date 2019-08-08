@@ -3,6 +3,9 @@
 # Expected messages and errors that can be skipped
 SKIPLIST='^([\s\t]|Found (merge|branch|possible)|Following|W: ([\-+]empty_dir|Refspec|Ignoring|Do not be alarmed)|expected path:|This may|Continuing|Initializing|Use of|Successfully)'
 
+# Github org for the git mirrors
+ORGANIZATION="EuPathDB"
+
 HOME=$1
 PROJECT=$2
 
@@ -24,6 +27,17 @@ function showUsage() {
   sco.sh <(gus|apidb)> <{project_name}>"
 }
 
+# Git checkout all the svn remote branches to prep them all for pushing to git
+function prepBranches() {
+  for i in `git branch --remotes | sed 's/origin\///;s/ //'`; do
+    git checkout $i;
+  done
+}
+
+# Perform any post-svn-checkout, pre-git-push cleanup steps
+function cleanup() {
+  git branch -D trunk
+}
 
 # Verify inputs
 if [[ -z ${HOME} ]] || [[ -z ${PROJECT} ]]; then
@@ -31,5 +45,12 @@ if [[ -z ${HOME} ]] || [[ -z ${PROJECT} ]]; then
  exit 1
 fi;
 
-gitsvn $HOME $PROJECT 2>&1 |\
-  grep -Pv "${SKIPLIST}"
+
+# Perform the checkout
+gitsvn $HOME $PROJECT 2>&1 | grep -Pv "${SKIPLIST}" \
+  && cd $PROJECT \
+  && prepBranches \
+  && cleanup \
+  && git push --all origin -fu \
+  && cd ..
+
