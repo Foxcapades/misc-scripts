@@ -1,0 +1,36 @@
+#! /bin/bash
+
+ORG="EuPathDB"
+PROJ=$1
+USER="git"
+HOST="github.com"
+
+# Git checkout all the svn remote branches to prep them all
+# for pushing to git
+function prepBranches() {
+  for i in `git branch --remotes | sed 's/origin\///;s/ //'`; do
+    git checkout $i;
+  done
+}
+
+# Perform any post-svn-checkout, pre-git-push cleanup steps
+function cleanup() {
+  git branch -D trunk
+}
+
+# Print script usage
+function printUsage() {
+  echo -e "Usage:\n  $0 <project>"
+}
+
+if [[ -z $PROJ ]]; then
+  printUsage
+  exit 1
+fi
+
+cd $PROJ \
+  && git remote add origin $USER@$HOST:$ORG/$PROJ.git \
+  && prepBranches \
+  && cleanup \
+  && git push --all origin -fu \
+  && cd ..
