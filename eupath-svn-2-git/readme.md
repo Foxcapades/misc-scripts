@@ -1,6 +1,6 @@
 # Subversion to Git migration helpers
 
-utils and wrappers to simplify my life while manually creating maintaining a one way sync between the EuPathDB SVN projects and git mirrors of those projects.
+utils and wrappers to simplify my life while manually creating and maintaining a one way sync between the EuPathDB SVN projects and git mirrors of those projects.
 
 ## Scripts
 
