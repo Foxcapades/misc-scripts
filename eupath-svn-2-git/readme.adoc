@@ -9,6 +9,7 @@ SVN projects and git mirrors of those projects.
 `sco.sh`:: git svn checkout
 `update.sh`:: git svn rebase
 `switch.sh`:: helper to change the owner of the git repos from "EuPathDB-Infra" to "EuPathDB"
+`post-checkout`:: helper that performs svn 2 git cleanup and post processing steps before pushing the repo to github
 
 ## Notes
 
