@@ -31,6 +31,7 @@ fi
 cd $PROJ \
   && git remote add origin $USER@$HOST:$ORG/$PROJ.git \
   && prepBranches \
+  && git checkout master \
   && cleanup \
   && git push --all origin -fu \
   && cd ..
