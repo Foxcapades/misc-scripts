@@ -16,6 +16,35 @@ Prep a repo for pushing to git. Prerequisites:
 2. git remote added
 
 ```sh
-git branch -D trunk
 for i in `git branch --remotes | sed 's/origin\///;s/ //'`; do git checkout $i; done
+git branch -D trunk
+```
+
+## Notes
+
+### New Mirror
+
+```sh
+./sco.sh <svn root> <project name>
+cd <project name>
+git remote add origin git@github.com:<org>/<project name>
+for i in `git branch --remotes | sed 's/origin\///;s/ //'`; do git checkout $i; done
+  ... a bunch of text ...
+git branch -D trunk
+git push --all origin -fu
+```
+
+### Update
+
+#### Step 1:
+
+```sh
+./update.sh
+```
+
+#### Step 2:
+
+fix the broken repo using git rebase/merge followed by
+```sh
+git push --all origin -fu
 ```
