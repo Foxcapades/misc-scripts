@@ -29,7 +29,6 @@ git branch -D trunk
 cd <project name>
 git remote add origin git@github.com:<org>/<project name>
 for i in `git branch --remotes | sed 's/origin\///;s/ //'`; do git checkout $i; done
-  ... a bunch of text ...
 git branch -D trunk
 git push --all origin -fu
 ```
