@@ -59,18 +59,35 @@ WITH
     FROM dupe_group_ids
     WHERE id != first
   )
-  , tables AS (
-    SELECT
-      table_name
-    FROM
-      all_tab_columns
-    WHERE
-      owner = 'USERLOGINS5'
-      AND column_name = 'COMMENT_ID'
-  )
-SELECT
-  'DELETE FROM ' || b.table_name || ' WHERE comment_id = ' || a.id || ';'
-FROM
-  filtered_group_ids a
-  CROSS JOIN tables b
+SELECT 'DELETE FROM locations WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM locations)
+UNION
+SELECT 'DELETE FROM comment_external_database WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM comment_external_database)
+UNION
+SELECT 'DELETE FROM commentreference WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM commentreference)
+UNION
+SELECT 'DELETE FROM commentsequence WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM commentsequence)
+UNION
+SELECT 'DELETE FROM commentfile WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM commentfile)
+UNION
+SELECT 'DELETE FROM commentstableid WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM commentstableid)
+UNION
+SELECT 'DELETE FROM commenttargetcategory WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM commenttargetcategory)
+UNION
+SELECT 'DELETE FROM comments WHERE comment_id = ' || id || ';'
+FROM filtered_group_ids
+WHERE id IN (SELECT comment_id FROM comments)
 ;
